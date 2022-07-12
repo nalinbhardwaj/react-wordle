@@ -1,14 +1,21 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { AlertProvider } from './context/AlertContext'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import Home from './Home'
+import Verify from './Verify'
 
 ReactDOM.render(
   <React.StrictMode>
     <AlertProvider>
-      <App />
+      <Router>
+        <Routes>
+          <Route path="/verify/:ipfsHash" element={<Verify />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </Router>
     </AlertProvider>
   </React.StrictMode>,
   document.getElementById('root')

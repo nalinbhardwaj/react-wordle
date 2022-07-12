@@ -1,5 +1,5 @@
 import { MAX_CHALLENGES } from '../../constants/settings'
-import { CompletedRow } from './CompletedRow'
+import { CompletedRow, CompletedVerifyRow } from './CompletedRow'
 import { CurrentRow } from './CurrentRow'
 import { EmptyRow } from './EmptyRow'
 
@@ -38,6 +38,26 @@ export const Grid = ({
       )}
       {empties.map((_, i) => (
         <EmptyRow key={i} />
+      ))}
+    </>
+  )
+}
+
+type VerifyProps = {
+  solution: string
+  diffs: number[][][]
+}
+
+export const VerifyGrid = ({ solution, diffs }: VerifyProps) => {
+  return (
+    <>
+      {diffs.map((diff, i) => (
+        <CompletedVerifyRow
+          key={i}
+          solution={solution}
+          diff={diff}
+          isRevealing={false}
+        />
       ))}
     </>
   )

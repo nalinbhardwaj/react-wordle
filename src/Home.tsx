@@ -35,14 +35,14 @@ import {
 } from './lib/localStorage'
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 
-import './App.css'
+import './Home.css'
 import { AlertContainer } from './components/alerts/AlertContainer'
 import { useAlert } from './context/AlertContext'
 import { Navbar } from './components/navbar/Navbar'
 import { isInAppBrowser } from './lib/browser'
 import { MigrateStatsModal } from './components/modals/MigrateStatsModal'
 
-function App() {
+function Home() {
   const prefersDarkMode = window.matchMedia(
     '(prefers-color-scheme: dark)'
   ).matches
@@ -319,4 +319,4 @@ function App() {
   )
 }
 
-export default App
+export default Home

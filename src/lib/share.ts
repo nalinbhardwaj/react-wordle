@@ -4,6 +4,7 @@ import { GAME_TITLE } from '../constants/strings'
 import { MAX_CHALLENGES } from '../constants/settings'
 import { UAParser } from 'ua-parser-js'
 import { wrap } from 'comlink'
+import { postToIpfs } from './ipfs'
 
 const webShareApiDeviceTypes: string[] = ['mobile', 'smarttv', 'wearable']
 const parser = new UAParser()
@@ -31,49 +32,68 @@ export const shareStatus = (
 
   const shareData = { text: textToShare }
 
-  generateProof(solution, guesses, lost);
+  const hash = generateProof(solution, guesses, lost)
 
-  let shareSuccess = false
-
-  try {
-    if (attemptShare(shareData)) {
-      navigator.share(shareData)
-      shareSuccess = true
-    }
-  } catch (error) {
-    shareSuccess = false
-  }
-
-  if (!shareSuccess) {
-    navigator.clipboard.writeText(textToShare)
-    handleShareToClipboard()
-  }
+  return hash
 }
 
 export const generateProof = async (
   solution: string,
   guesses: string[],
-  lost: boolean,
+  lost: boolean
 ) => {
-  solution = solution.toLowerCase();
-  guesses = guesses.map((guess) => guess.toLowerCase());
+  solution = solution.toLowerCase()
+  guesses = guesses.map((guess) => guess.toLowerCase())
+  while (guesses.length < 6) {
+    guesses.push(solution)
+  }
+  console.log(`solution: ${solution}`)
+  console.log(`guesses: ${guesses}`)
 
   if (lost) {
-    return undefined;
+    return undefined
   }
 
   const worker = new Worker(new URL('./halo-worker', import.meta.url), {
     name: 'halo-worker',
     type: 'module',
-  });
-  const workerApi = wrap<import('./halo-worker').HaloWorker>(worker);
+  })
+  const workerApi = wrap<import('./halo-worker').HaloWorker>(worker)
 
-  const diffs = await workerApi.get_play_diff(solution, guesses);
-  console.log('diffs', diffs);
+  const diffs = await workerApi.get_play_diff(solution, guesses)
+  console.log('diffs', diffs)
 
-  const proof = await workerApi.prove_play(solution, guesses);
-  console.log('proof', proof);
-  return proof;
+  const proof = await workerApi.prove_play(solution, guesses)
+  console.log('proof', proof)
+
+  const storor = {
+    solutionIndex,
+    proof,
+    diffs,
+  }
+  const ipfsHash = await postToIpfs(JSON.stringify(storor))
+  console.log('ipfsHash', ipfsHash)
+  return ipfsHash
+}
+
+export const verifyProof = async (
+  solution: string,
+  diffs: number[][][],
+  proof: number[]
+) => {
+  solution = solution.toLowerCase()
+  const worker = new Worker(new URL('./halo-worker', import.meta.url), {
+    name: 'halo-worker-verify',
+    type: 'module',
+  })
+  const workerApi = wrap<import('./halo-worker').HaloWorker>(worker)
+
+  console.log('solution', solution)
+  console.log('diffs', diffs)
+  console.log('proof', proof)
+
+  const verify = await workerApi.verify_play(solution, proof, diffs)
+  return verify
 }
 
 export const generateEmojiGrid = (

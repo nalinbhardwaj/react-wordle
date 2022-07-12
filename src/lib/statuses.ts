@@ -31,6 +31,23 @@ export const getStatuses = (
   return charObj
 }
 
+export const diffToStatus = (diff: number[][]): CharStatus[] => {
+  if (!diff) {
+    return []
+  }
+  const statuses: CharStatus[] = Array.from(Array(diff[0].length))
+  for (var i = 0; i < diff[0].length; i++) {
+    if (diff[0][i] === 1) {
+      statuses[i] = 'correct'
+    } else if (diff[1][i] === 1) {
+      statuses[i] = 'present'
+    } else {
+      statuses[i] = 'absent'
+    }
+  }
+  return statuses
+}
+
 export const getGuessStatuses = (
   solution: string,
   guess: string
