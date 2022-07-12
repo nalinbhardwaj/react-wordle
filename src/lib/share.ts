@@ -3,6 +3,7 @@ import { solutionIndex, unicodeSplit } from './words'
 import { GAME_TITLE } from '../constants/strings'
 import { MAX_CHALLENGES } from '../constants/settings'
 import { UAParser } from 'ua-parser-js'
+import { wrap } from 'comlink'
 
 const webShareApiDeviceTypes: string[] = ['mobile', 'smarttv', 'wearable']
 const parser = new UAParser()
@@ -30,6 +31,8 @@ export const shareStatus = (
 
   const shareData = { text: textToShare }
 
+  generateProof(solution, guesses, lost);
+
   let shareSuccess = false
 
   try {
@@ -45,6 +48,32 @@ export const shareStatus = (
     navigator.clipboard.writeText(textToShare)
     handleShareToClipboard()
   }
+}
+
+export const generateProof = async (
+  solution: string,
+  guesses: string[],
+  lost: boolean,
+) => {
+  solution = solution.toLowerCase();
+  guesses = guesses.map((guess) => guess.toLowerCase());
+
+  if (lost) {
+    return undefined;
+  }
+
+  const worker = new Worker(new URL('./halo-worker', import.meta.url), {
+    name: 'halo-worker',
+    type: 'module',
+  });
+  const workerApi = wrap<import('./halo-worker').HaloWorker>(worker);
+
+  const diffs = await workerApi.get_play_diff(solution, guesses);
+  console.log('diffs', diffs);
+
+  const proof = await workerApi.prove_play(solution, guesses);
+  console.log('proof', proof);
+  return proof;
 }
 
 export const generateEmojiGrid = (

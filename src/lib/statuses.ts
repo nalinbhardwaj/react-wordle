@@ -67,7 +67,7 @@ export const getGuessStatuses = (
 
     if (indexOfPresentChar > -1) {
       statuses[i] = 'present'
-      solutionCharsTaken[indexOfPresentChar] = true
+      // solutionCharsTaken[indexOfPresentChar] = true
       return
     } else {
       statuses[i] = 'absent'
