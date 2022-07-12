@@ -1,0 +1,12 @@
+{
+  "name": "halowordle",
+  "version": "0.1.0",
+  "files": [
+    "wordle_bg.wasm",
+    "wordle.js",
+    "wordle.d.ts"
+  ],
+  "module": "wordle.js",
+  "types": "wordle.d.ts",
+  "sideEffects": false
+}
