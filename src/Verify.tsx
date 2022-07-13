@@ -220,6 +220,13 @@ function Verify() {
                 {verifyButtonText}
               </button>
             </div>
+            <div>
+              <p className="text-m font-bold dark:text-white mt-5 mb-2.5 justify-center text-center">
+                <a href={`https://ipfs.io/ipfs/${ipfsHash}`} target="_blank">
+                  Inspect Halo 2 ZK Proof ↗️
+                </a>
+              </p>
+            </div>
           </div>
         </div>
         <InfoModal
