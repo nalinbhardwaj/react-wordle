@@ -43,7 +43,7 @@ import { isInAppBrowser } from './lib/browser'
 import { MigrateStatsModal } from './components/modals/MigrateStatsModal'
 import { useParams } from 'react-router-dom'
 import { readFromIpfs } from './lib/ipfs'
-import { verifyProof } from './lib/share'
+import { verifyProof, shareText } from './lib/share'
 
 type ProofDataType = {
   solutionIndex: number
@@ -221,18 +221,27 @@ function Verify() {
               </button>
             </div>
             <div>
-              <p className="text-m font-bold dark:text-white mt-5 mb-2.5 justify-center text-center">
+              <p className="text-m font-bold dark:text-white mt-5 mb-5 justify-center text-center">
                 <a href={`https://ipfs.io/ipfs/${ipfsHash}`} target="_blank">
-                  Inspect Halo 2 ZK Proof ↗️
+                  Inspect ZK Proof ↗️
                 </a>
+              </p>
+            </div>
+            <div className="flex items-center justify-center">
+              <p>
+                <button
+                  type="button"
+                  className="inline-flex justify-center items-center text-center mt-2 w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm max-w-lg"
+                  onClick={() =>
+                    shareText(`https://zordle.xyz/verify/${ipfsHash}`)
+                  }
+                >
+                  Copy URL to clipboard ↗️
+                </button>
               </p>
             </div>
           </div>
         </div>
-        <InfoModal
-          isOpen={isInfoModalOpen}
-          handleClose={() => setIsInfoModalOpen(false)}
-        />
         <StatsModal
           isOpen={isStatsModalOpen}
           handleClose={() => setIsStatsModalOpen(false)}

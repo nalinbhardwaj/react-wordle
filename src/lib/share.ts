@@ -30,11 +30,29 @@ export const shareStatus = (
       getEmojiTiles(isDarkMode, isHighContrastMode)
     )
 
-  const shareData = { text: textToShare }
-
   const hash = generateProof(solution, guesses, lost)
 
   return hash
+}
+
+export const shareText = (txt: string) => {
+  let shareSuccess = false
+  const shareData = { text: txt }
+  try {
+    if (attemptShare(shareData)) {
+      navigator.share(shareData)
+      shareSuccess = true
+    }
+  } catch (error) {
+    shareSuccess = false
+  }
+
+  if (!shareSuccess) {
+    navigator.clipboard.writeText(txt)
+  }
+
+  console.log('shareSuccess', shareSuccess)
+  return shareSuccess
 }
 
 export const generateProof = async (
