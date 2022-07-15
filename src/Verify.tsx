@@ -222,7 +222,10 @@ function Verify() {
             </div>
             <div>
               <p className="text-m font-bold dark:text-white mt-5 mb-5 justify-center text-center">
-                <a href={`https://ipfs.io/ipfs/${ipfsHash}`} target="_blank">
+                <a
+                  href={`https://ipfs.infura.io/ipfs/${ipfsHash}`}
+                  target="_blank"
+                >
                   Inspect ZK Proof ↗️
                 </a>
               </p>
