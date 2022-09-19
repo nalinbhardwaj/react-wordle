@@ -1,33 +1,30 @@
-import { create } from "ipfs-http-client";
+import { create } from 'ipfs-http-client'
 
-const infuraProjectId = "27gFFJHH3Wao71b1vrxtGiaNVS9";
-const infuraProjectSecret = "715e7c280a49ce2792d95571758c8c85";
-const infuraBase = "https://exgrasia.infura-ipfs.io/ipfs/";
+const infuraBase = 'https://exgrasia.infura-ipfs.io/ipfs/'
 
 const auth =
-  "Basic " +
-  Buffer.from(infuraProjectId + ":" + infuraProjectSecret).toString("base64");
+  'Basic MjdnRkZKSEgzV2FvNzFiMXZyeHRHaWFOVlM5OjcxNWU3YzI4MGE0OWNlMjc5MmQ5NTU3MTc1OGM4Yzg1'
 
 function createIpfs() {
   const ipfs = create({
-    url: "https://ipfs.infura.io:5001",
+    url: 'https://ipfs.infura.io:5001',
     headers: {
       authorization: auth,
     },
-  });
-  return ipfs;
+  })
+  return ipfs
 }
 
 export async function postToIpfs(message: string) {
-  const ipfs = createIpfs();
+  const ipfs = createIpfs()
 
   // TODO: pin?
-  const { cid } = await ipfs.add(message);
-  return cid;
+  const { cid } = await ipfs.add(message)
+  return cid
 }
 
 export async function readFromIpfs(cid: string) {
-  const ipfs = infuraBase + cid;
-  const response = await (await fetch(ipfs)).json();
-  return response;
+  const ipfs = infuraBase + cid
+  const response = await (await fetch(ipfs)).json()
+  return response
 }

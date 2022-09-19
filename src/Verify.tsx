@@ -133,8 +133,7 @@ function Verify() {
 
   const populateProofData = async () => {
     if (!ipfsHash) return
-    const proofStr = await readFromIpfs(ipfsHash)
-    const proofData = JSON.parse(proofStr)
+    const proofData = await readFromIpfs(ipfsHash)
     console.log('proofData', proofData)
     setSolution(getWordOfDay(proofData.solutionIndex))
     setProofData(proofData)
