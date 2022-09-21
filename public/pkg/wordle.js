@@ -533,11 +533,11 @@ function getImports() {
         const ret = startWorkers(takeObject(arg0), takeObject(arg1), wbg_rayon_PoolBuilder.__wrap(arg2));
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper997 = function(arg0, arg1, arg2) {
+    imports.wbg.__wbindgen_closure_wrapper955 = function(arg0, arg1, arg2) {
         const ret = makeMutClosure(arg0, arg1, 227, __wbg_adapter_30);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper999 = function(arg0, arg1, arg2) {
+    imports.wbg.__wbindgen_closure_wrapper957 = function(arg0, arg1, arg2) {
         const ret = makeMutClosure(arg0, arg1, 227, __wbg_adapter_30);
         return addHeapObject(ret);
     };
